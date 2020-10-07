@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AreaMeasureProject</string>
+    <string name="exitTextView">Exit</string>
+
 </resources>
