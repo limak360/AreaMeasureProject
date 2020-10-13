@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">AreaMeasureProject</string>
+
+    <string name="google_maps_api_key">AIzaSyD0gn7oDRPXPyTCcpHC4Ywo5DMi9W7dgWU</string>
+
     <string name="exitTextView">Exit</string>
 
 </resources>
