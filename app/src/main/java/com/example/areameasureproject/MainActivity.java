@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,11 +24,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.Objects;
+
 import static com.example.areameasureproject.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.areameasureproject.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
 
-public class MainActivity extends AppCompatActivity implements
-        View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
 
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(this);
     }
 
     @Override
@@ -46,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onResume();
         if (isGPSEnabled()) {
             if (mLocationPermissionGranted) {
-                Toast.makeText(this, "UDALO SIE", Toast.LENGTH_SHORT).show();
                 getLastKnownLocation();
             } else {
                 getLocationPermission();
@@ -54,11 +58,15 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        getLastKnownLocation();
+    }
+
     private void getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation: called.");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.e(TAG, "getLastKnownLocation: CHUJA DZIALA");
             return;
         }
         mfusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
@@ -66,8 +74,17 @@ public class MainActivity extends AppCompatActivity implements
             public void onComplete(@NonNull Task<Location> task) {
                 if (task.isSuccessful()) {
                     Location location = task.getResult();
-                    Log.d(TAG, "onComplete: latitude:" + location.getLatitude());
-                    Log.d(TAG, "onComplete: longitude:" + location.getLongitude());
+                    if (Objects.isNull(location)) {
+                        Log.d(TAG, "onComplete:  Null");
+                        Toast.makeText(MainActivity.this, "location is Null", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "latitude: " + location.getLatitude() + "\n longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onComplete: latitude:" + location.getLatitude());
+                        Log.d(TAG, "onComplete: longitude:" + location.getLongitude());
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "failure", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onComplete: failure");
                 }
             }
         });
@@ -103,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if (mLocationPermissionGranted) {
-                    Toast.makeText(this, "UDALO SIE", Toast.LENGTH_SHORT).show();
                     getLastKnownLocation();
                 } else {
                     getLocationPermission();
@@ -112,17 +128,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    /*
-     * Request location permission, so that we can get the location of the
-     * device. The result of the permission request is handled by a callback,
-     * onRequestPermissionsResult.
-     */
     private void getLocationPermission() {
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
-            Toast.makeText(this, "UDALO SIE", Toast.LENGTH_SHORT).show();
             getLastKnownLocation();
         } else {
             ActivityCompat.requestPermissions(this,
@@ -138,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements
         mLocationPermissionGranted = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
@@ -146,31 +155,4 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
-
-    @Override
-    public void onClick(View v) {
-
-    }
-
-//    private void verifyPermissions() {
-//        Log.d(TAG, "verifyPermissions: Checking Permissions.");
-//
-//        int permissionCallPhone = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE);
-//        if (permissionCallPhone != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(
-//                    MainActivity.this,
-//                    CALL_PERMISSIONS,
-//                    1
-//            );
-//        }
-//
-//        int permissionExternalMemory = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//        if (permissionExternalMemory != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(
-//                    MainActivity.this,
-//                    STORAGE_PERMISSIONS,
-//                    1
-//            );
-//        }
-//    }
 }
