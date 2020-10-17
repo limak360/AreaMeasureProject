@@ -28,7 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.areameasureproject.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.areameasureproject.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
@@ -67,6 +68,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+//        LatLng latLng = new LatLng(50.047, 18.955);
+//        LatLng latLng1 = new LatLng(50.085, 19.122);
+//        LatLng latLng2 = new LatLng(50.196, 19.164);
+//        LatLng latLng3 = new LatLng(50.231, 19.048);
+//        LatLng latLng4 = new LatLng(50.173, 18.903);
+//        LatLng latLng5 = new LatLng(50.047, 18.955);
+//        List<LatLng> coordinates = new ArrayList<>();
+//        coordinates.add(latLng);
+//        coordinates.add(latLng1);
+//        coordinates.add(latLng2);
+//        coordinates.add(latLng3);
+//        coordinates.add(latLng4);
+//        coordinates.add(latLng5);
+//        AreaProvider areaProvider = new AreaProvider(coordinates);
+//        Toast.makeText(this, "Area" + areaProvider.getArea(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
