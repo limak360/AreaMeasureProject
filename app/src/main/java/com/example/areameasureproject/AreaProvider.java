@@ -21,7 +21,8 @@ public class AreaProvider {
 
         int j = coordinates.size() - 1;
         for (int i = 0; i < coordinates.size(); i++) {
-            area += (coordinates.get(j).latitude + coordinates.get(i).latitude) * (coordinates.get(j).longitude - coordinates.get(i).longitude);
+            area += (coordinates.get(j).latitude + coordinates.get(i).latitude) *
+                            (coordinates.get(j).longitude - coordinates.get(i).longitude);
 
             j = i;
         }

@@ -2,21 +2,24 @@ package com.example.areameasureproject;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Date;
 import java.util.List;
 
-public class Polygon {
+public class Measurement {
 
     private int id;
-    private double area;
+    private Date date;
     private List<LatLng> coordinates;
+    private double area;
 
-    public Polygon() {
+    public Measurement() {
     }
 
-    public Polygon(int id, double area, List<LatLng> coordinates) {
+    public Measurement(int id, Date date, List<LatLng> coordinates, double area) {
         this.id = id;
-        this.area = area;
+        this.date = date;
         this.coordinates = coordinates;
+        this.area = area;
     }
 
     public int getId() {
@@ -27,12 +30,12 @@ public class Polygon {
         this.id = id;
     }
 
-    public double getArea() {
-        return area;
+    public Date getDate() {
+        return date;
     }
 
-    public void setArea(double area) {
-        this.area = area;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public List<LatLng> getCoordinates() {
@@ -43,12 +46,21 @@ public class Polygon {
         this.coordinates = coordinates;
     }
 
+    public double getArea() {
+        return area;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
     @Override
     public String toString() {
-        return "Polygon{" +
+        return "Measurement{" +
                 "id=" + id +
-                ", area=" + area +
+                ", date=" + date +
                 ", coordinates=" + coordinates +
+                ", area=" + area +
                 '}';
     }
 }
