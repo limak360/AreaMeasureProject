@@ -6,5 +6,8 @@
     <string name="exitTextView">Exit</string>
     <string name="my_app">My app</string>
     <string name="get_location">get location</string>
+    <string name="profile">profile</string>
+    <string name="measurements">Measurements</string>
+    <string name="my_app_IDK">My App</string>
 
 </resources>
