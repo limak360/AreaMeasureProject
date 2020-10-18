@@ -1,4 +1,4 @@
-package com.example.areameasureproject;
+package com.example.areameasureproject.measure;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -13,10 +13,10 @@ public class AreaProvider {
     }
 
     public double getArea() {
-        return calculateArea();
+        return measureArea();
     }
 
-    private double calculateArea() {
+    private double measureArea() {
         double area = 0.0;
 
         int j = coordinates.size() - 1;

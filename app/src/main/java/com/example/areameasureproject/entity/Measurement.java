@@ -1,32 +1,33 @@
-package com.example.areameasureproject;
+package com.example.areameasureproject.entity;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.areameasureproject.measure.LatLngAdapter;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Measurement {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-    private int id;
+@Entity
+public class Measurement implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Date date;
-    private List<LatLng> coordinates;
+    private List<LatLngAdapter> coordinates;
     private double area;
 
     public Measurement() {
     }
 
-    public Measurement(int id, Date date, List<LatLng> coordinates, double area) {
-        this.id = id;
-        this.date = date;
-        this.coordinates = coordinates;
-        this.area = area;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,11 +39,11 @@ public class Measurement {
         this.date = date;
     }
 
-    public List<LatLng> getCoordinates() {
+    public List<LatLngAdapter> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<LatLng> coordinates) {
+    public void setCoordinates(List<LatLngAdapter> coordinates) {
         this.coordinates = coordinates;
     }
 
