@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ClickCos(View view) {
-        redirectActivity(this, );
+        //redirectActivity(this, );
     }
 
     private void redirectActivity(Activity activity, Class aClass) {
