@@ -9,5 +9,9 @@
     <string name="profile">profile</string>
     <string name="measurements">Measurements</string>
     <string name="my_app_IDK">My App</string>
+    <string name="map">Map</string>
+    <string name="saved_measurements">Saved measurements</string>
+    <string name="settings">Settings</string>
+    <string name="about_me">About me</string>
 
 </resources>

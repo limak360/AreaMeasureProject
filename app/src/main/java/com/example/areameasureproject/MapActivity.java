@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,6 +32,9 @@ import com.google.android.gms.tasks.Task;
 
 import static com.example.areameasureproject.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.areameasureproject.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
+import static com.example.areameasureproject.MainActivity.closeDrawer;
+import static com.example.areameasureproject.MainActivity.openDrawer;
+import static com.example.areameasureproject.MainActivity.redirectActivity;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -40,11 +45,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        drawerLayout = findViewById(R.id.drawer_layout);
+    }
+
+    public void ClickMenu(View view) {
+        openDrawer(drawerLayout);
+    }
+
+    public void ClickLogo(View view) {
+        closeDrawer(drawerLayout);
+    }
+
+    public void ClickMap(View view) {
+        redirectActivity(this, MapActivity.class);
+    }
+
+    public void ClickSavedMeasurements(View view) {
+        redirectActivity(this, MeasurementListActivity.class);
+    }
+
+    public void ClickSettings(View view) {
+        redirectActivity(this, SettingsActivity.class);
+    }
+
+    public void ClickAboutMe(View view) {
+        redirectActivity(this, AboutMeActivity.class);
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,11 +33,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void OnClickMenu(View view) {
+    public void ClickMenu(View view) {
         openDrawer(drawerLayout);
     }
 
-    private void openDrawer(DrawerLayout drawerLayout) {
+    public static void openDrawer(DrawerLayout drawerLayout) {
+        Log.d(TAG, "openDrawer: ");
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
@@ -46,15 +46,29 @@ public class MainActivity extends AppCompatActivity {
         closeDrawer(drawerLayout);
     }
 
-    private void closeDrawer(DrawerLayout drawerLayout) {
-        drawerLayout.closeDrawer(GravityCompat.START);
+    public static void closeDrawer(DrawerLayout drawerLayout) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
     }
 
-    public void ClickCos(View view) {
-        //redirectActivity(this, );
+    public void ClickMap(View view) {
+        redirectActivity(this, MapActivity.class);
     }
 
-    private void redirectActivity(Activity activity, Class aClass) {
+    public void ClickSavedMeasurements(View view) {
+        redirectActivity(this, MeasurementListActivity.class);
+    }
+
+    public void ClickSettings(View view) {
+        redirectActivity(this, SettingsActivity.class);
+    }
+
+    public void ClickAboutMe(View view) {
+        redirectActivity(this, AboutMeActivity.class);
+    }
+
+    public static void redirectActivity(Activity activity, Class aClass) {
         Intent intent = new Intent(activity, aClass);
         activity.startActivity(intent);
     }
@@ -66,14 +80,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        Button btnMap = findViewById(R.id.button);
-        btnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, MapActivity.class);
+        startActivity(intent);
     }
 
     public boolean isServicesOK() {

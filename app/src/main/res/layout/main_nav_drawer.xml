@@ -9,13 +9,13 @@
         android:layout_height="120dp"
         android:layout_margin="16dp"
         android:onClick="ClickLogo"
-        android:src="" />
+        android:src="@drawable/ic_logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:onClick="ClickCos"
+        android:onClick="ClickMap"
         android:orientation="horizontal">
 
         <TextView
@@ -24,7 +24,60 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:padding="12dp"
-            android:text="Cos" />
+            android:text="@string/map" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:onClick="ClickSavedMeasurements"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/saved_measurements" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:onClick="ClickSettings"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/settings" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:onClick="ClickAboutMe"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/about_me" />
 
     </LinearLayout>
 
