@@ -3,7 +3,6 @@ package com.example.areameasureproject.entity;
 import com.example.areameasureproject.measure.LatLngAdapter;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,7 +15,7 @@ public class Measurement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date date;
+    private String date;
     private List<LatLngAdapter> coordinates;
     private double area;
 
@@ -31,11 +30,11 @@ public class Measurement implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

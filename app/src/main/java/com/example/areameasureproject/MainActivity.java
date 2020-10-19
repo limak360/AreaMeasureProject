@@ -15,7 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-//todo menu nav, recycle view + menu kontekstowe
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

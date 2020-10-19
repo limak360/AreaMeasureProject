@@ -63,7 +63,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void ClickMap(View view) {
-        redirectActivity(this, MapActivity.class);
+        closeDrawer(drawerLayout);
     }
 
     public void ClickSavedMeasurements(View view) {

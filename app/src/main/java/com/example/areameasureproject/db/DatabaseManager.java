@@ -41,7 +41,7 @@ public class DatabaseManager {
     public List<Measurement> getAllMeasurements() {
         List<Measurement> measurements = null;
         try {
-            measurements.addAll(simpleDao.queryForAll());
+            measurements.addAll(simpleDao.queryForAll()); //todo problema
         } catch (SQLException e) {
             e.printStackTrace();
         }
