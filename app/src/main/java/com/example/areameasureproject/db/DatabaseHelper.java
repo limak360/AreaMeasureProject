@@ -2,9 +2,11 @@ package com.example.areameasureproject.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.areameasureproject.entity.LatLngAdapter;
 import com.example.areameasureproject.entity.Measurement;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -15,7 +17,11 @@ import java.sql.SQLException;
 
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    Dao<Measurement, Long> daoObject;
+
+    private static final String TAG = "DatabaseHelper";
+
+    private Dao<Measurement, Long> measurementDao;
+    private Dao<LatLngAdapter, Long> latLngAdapterDao;
 
     public static final String DATABASE_NAME = "PolygonsDB";
     public static final int DATABASE_VERSION = 1;
@@ -26,8 +32,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+        Log.d(TAG, "onCreate: ");
         try {
             TableUtils.createTable(connectionSource, Measurement.class);
+            TableUtils.createTable(connectionSource, LatLngAdapter.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -35,16 +43,30 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+        Log.d(TAG, "onUpgrade: ");
     }
 
-    public Dao<Measurement, Long> getDao() {
-        if (daoObject == null) {
+    public Dao<Measurement, Long> getMeasurementDao() {
+        Log.d(TAG, "getDao: measurement ");
+        if (measurementDao == null) {
             try {
-                daoObject = getDao(Measurement.class);
+                measurementDao = getDao(Measurement.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return daoObject;
+        return measurementDao;
+    }
+
+    public Dao<LatLngAdapter, Long> getLatLngAdapterDao() {
+        Log.d(TAG, "getDao: latlng");
+        if (latLngAdapterDao == null) {
+            try {
+                latLngAdapterDao = getDao(LatLngAdapter.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return latLngAdapterDao;
     }
 }
