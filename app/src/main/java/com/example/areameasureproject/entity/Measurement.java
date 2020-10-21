@@ -1,10 +1,11 @@
 package com.example.areameasureproject.entity;
 
-import com.example.areameasureproject.measure.LatLngAdapter;
+import com.j256.ormlite.field.ForeignCollectionField;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,8 +16,11 @@ public class Measurement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String date;
-    private List<LatLngAdapter> coordinates;
+    @ForeignCollectionField(eager = true)
+    private Collection<LatLngAdapter> coordinates;
+    @Column
     private double area;
 
     public Measurement() {
@@ -38,11 +42,11 @@ public class Measurement implements Serializable {
         this.date = date;
     }
 
-    public List<LatLngAdapter> getCoordinates() {
+    public Collection<LatLngAdapter> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<LatLngAdapter> coordinates) {
+    public void setCoordinates(Collection<LatLngAdapter> coordinates) {
         this.coordinates = coordinates;
     }
 
