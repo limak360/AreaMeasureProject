@@ -8,14 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_margin="16dp"
-        android:onClick="ClickLogo"
+        android:onClick="clickLogo"
         android:src="@drawable/ic_logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:onClick="ClickMap"
+        android:onClick="clickMap"
         android:orientation="horizontal">
 
         <TextView
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:onClick="ClickSavedMeasurements"
+        android:onClick="clickSavedMeasurements"
         android:orientation="horizontal">
 
         <TextView
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:onClick="ClickSettings"
+        android:onClick="clickSettings"
         android:orientation="horizontal">
 
         <TextView
@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:onClick="ClickAboutMe"
+        android:onClick="clickAboutMe"
         android:orientation="horizontal">
 
         <TextView

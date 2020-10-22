@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -19,7 +20,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:context=".MapsActivity" />
+
+
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/finish_measurement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickStopMeasurement"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/start_measurement"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_finish_measurement" />
+
+        <ImageView
+            android:id="@+id/start_measurement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickStartMeasurement"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_start_measurement" />
+
+        <ImageView
+            android:id="@+id/add_marker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickStartMeasurement"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_pin_drop" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="200dp"

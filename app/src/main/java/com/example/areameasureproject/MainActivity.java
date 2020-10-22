@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void ClickMenu(View view) {
+    public void clickMenu(View view) {
         openDrawer(drawerLayout);
     }
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
-    public void ClickLogo(View view) {
+    public void clickLogo(View view) {
         closeDrawer(drawerLayout);
     }
 
@@ -52,19 +52,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void ClickMap(View view) {
+    public void clickMap(View view) {
         redirectActivity(this, MapActivity.class);
     }
 
-    public void ClickSavedMeasurements(View view) {
+    public void clickSavedMeasurements(View view) {
         redirectActivity(this, MeasurementListActivity.class);
     }
 
-    public void ClickSettings(View view) {
+    public void clickSettings(View view) {
         redirectActivity(this, SettingsActivity.class);
     }
 
-    public void ClickAboutMe(View view) {
+    public void clickAboutMe(View view) {
         redirectActivity(this, AboutMeActivity.class);
     }
 

@@ -26,6 +26,13 @@ public class Measurement implements Serializable {
     public Measurement() {
     }
 
+//    public static class Build extends Measurement {
+//        private String date;
+//        private Collection<LatLngAdapter> coordinates;
+//        private double area;
+//
+//    }
+
     public Long getId() {
         return id;
     }
@@ -67,4 +74,5 @@ public class Measurement implements Serializable {
                 ", area=" + area +
                 '}';
     }
+
 }

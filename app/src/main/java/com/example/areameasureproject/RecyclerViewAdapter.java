@@ -1,5 +1,6 @@
 package com.example.areameasureproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,10 +37,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return new ViewHolder(view);
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.date.setText(measurementList.get(position).getDate());
-        holder.area.setText(String.valueOf(measurementList.get(position).getArea()));
+        holder.area.setText(String.format("%.3f",measurementList.get(position).getArea())+" m2");
 
         List<String> coordinates = new ArrayList<>();
         for (LatLngAdapter latLngAdapter : measurementList.get(position).getCoordinates()) {
