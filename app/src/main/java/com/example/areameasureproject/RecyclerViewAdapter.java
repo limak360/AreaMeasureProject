@@ -2,6 +2,8 @@ package com.example.areameasureproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.areameasureproject.entity.LatLngAdapter;
 import com.example.areameasureproject.entity.Measurement;
+import com.example.areameasureproject.measure.MeasurementProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.date.setText(measurementList.get(position).getDate());
-        holder.area.setText(String.format("%.3f",measurementList.get(position).getArea())+" m2");
+        holder.area.setText(String.format("%.3f", measurementList.get(position).getArea()) + " m2");
 
         List<String> coordinates = new ArrayList<>();
         for (LatLngAdapter latLngAdapter : measurementList.get(position).getCoordinates()) {
@@ -49,9 +52,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             coordinates.add(coordinatesFormatter);
         }
 
-        String formattedList = coordinates.toString().substring(1,coordinates.toString().length()-1);
+        String formattedList = coordinates.toString().substring(1, coordinates.toString().length() - 1);
         holder.coordinates.setText(formattedList);
-        holder.parentLayout.setOnClickListener(v -> Toast.makeText(mContext, measurementList.get(position).getCoordinates().toString(), Toast.LENGTH_SHORT).show());
+        /// 20/22 * 15 cala 651 m2
+
+        holder.itemView.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
+            menu.add(0, R.id.loadMeasurement, 0, R.string.load_measurement)
+                    .setOnMenuItemClickListener(item -> {
+                        Measurement measurement  = measurementList.get(holder.getAdapterPosition());//TODO task ? service? idk
+                        Intent intent = new Intent (v.getContext(), MapActivity.class);
+                        v.getContext().startActivity(intent);
+                        return true;
+                    });
+            menu.add(0, R.id.exportMeasurement, 1, R.string.export_measurement_to)
+                    .setOnMenuItemClickListener(item -> {
+                        Toast.makeText(mContext,"Exporting ...",Toast.LENGTH_SHORT).show();
+                        return true;
+                    });
+        });
     }
 
     @Override

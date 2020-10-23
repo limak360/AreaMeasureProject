@@ -5,17 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,6 +21,7 @@ import com.example.areameasureproject.db.DatabaseManager;
 import com.example.areameasureproject.entity.LatLngAdapter;
 import com.example.areameasureproject.entity.Measurement;
 import com.example.areameasureproject.measure.AreaProvider;
+import com.example.areameasureproject.measure.MeasurementProvider;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -33,12 +31,14 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.Task;
 
@@ -46,6 +46,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.example.areameasureproject.MainActivity.closeDrawer;
@@ -53,7 +54,7 @@ import static com.example.areameasureproject.MainActivity.openDrawer;
 import static com.example.areameasureproject.MainActivity.redirectActivity;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    //TODO
+    //TODO dodac wczytywanie zapisanego pomiaru do mapy jako context menu
     private static final String TAG = "MapActivity";
 
     private static final int REQUEST_CHECK_SETTINGS = 102;
@@ -69,6 +70,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private DrawerLayout drawerLayout;
     private Context mContext;
     private List<LatLng> coordinates;
+    private Polygon polygon;
 
     public void clickMenu(View view) {
         openDrawer(drawerLayout);
@@ -96,44 +98,69 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     //przeniesc do innej klasy
     ImageView startMeasurement;
-    ImageView dropPin;
     ImageView stopMeasurement;
+    ImageView discardMeasurement;
+    ImageView dropPin;
 
     public void clickStartMeasurement(View view) {
-        removePolygon();
-        startMeasurement = findViewById(R.id.start_measurement);
-        stopMeasurement = findViewById(R.id.finish_measurement);
-        dropPin = findViewById(R.id.add_marker);
+        clearMap();
         startMeasurement.setVisibility(View.INVISIBLE);
-        dropPin.setVisibility(View.VISIBLE);
         stopMeasurement.setVisibility(View.VISIBLE);
+        discardMeasurement.setVisibility(View.VISIBLE);
+        dropPin.setVisibility(View.VISIBLE);
+
         dropPin.setOnClickListener(v -> {
             drawPositionMarker(currentLocation);
             coordinates.add(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            removePolygon();
             drawPolygon();
         });
     }
 
     public void clickStopMeasurement(View view) {
-        stopMeasurement.setVisibility(View.INVISIBLE);
-        dropPin.setVisibility(View.INVISIBLE);
         startMeasurement.setVisibility(View.VISIBLE);
+        stopMeasurement.setVisibility(View.INVISIBLE);
+        discardMeasurement.setVisibility(View.INVISIBLE);
+        dropPin.setVisibility(View.INVISIBLE);
         if (!coordinates.isEmpty()) {
             coordinates.add(coordinates.get(0));
-            drawPolygon();
         }
         saveMeasureResult();
     }
 
-    private void drawPolygon() { //TODO stylizacja
-        mMap.addPolygon(new PolygonOptions()
+    public void clickDiscardMeasurement(View view) {
+        clearMap();
+        deleteCoordinates();
+        startMeasurement.setVisibility(View.VISIBLE);
+        stopMeasurement.setVisibility(View.INVISIBLE);
+        discardMeasurement.setVisibility(View.INVISIBLE);
+        dropPin.setVisibility(View.INVISIBLE);
+    }
+
+    private void drawPolygon() {
+        polygon = mMap.addPolygon(new PolygonOptions()
                 .clickable(false)
-                .fillColor(Color.GREEN)
+                .strokeColor(0xAA0000FF)
+                .fillColor(0x660000FF)
                 .addAll(coordinates));
     }
 
     private void removePolygon() {
+        if (!Objects.isNull(polygon)) {
+            polygon.remove();
+        }
+    }
+
+    private void clearMap() {
         mMap.clear();
+    }
+
+    private void drawPositionMarker(Location location) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        markerOptions.position(latLng);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker());
+        mMap.addMarker(markerOptions);
     }
 
     private void saveMeasureResult() {
@@ -144,6 +171,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         DatabaseManager databaseManager = DatabaseManager.getInstance(this);
         databaseManager.addLatLngAdapters(latLngAdapterList);
         databaseManager.addMeasurement(measurement);
+        deleteCoordinates();
+    }
+
+    private void deleteCoordinates() {
         coordinates.clear();
     }
 
@@ -168,15 +199,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        mContext = getApplicationContext();
         drawerLayout = findViewById(R.id.drawer_layout);
+        startMeasurement = findViewById(R.id.start_measurement);
+        stopMeasurement = findViewById(R.id.finish_measurement);
+        discardMeasurement = findViewById(R.id.discard_measurement);
+        dropPin = findViewById(R.id.add_marker);
+        mContext = getApplicationContext();
         coordinates = new ArrayList<>();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        mLocationRequest = createLocationRequest();
-        builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
-        checkLocationSetting(builder); //na tym etapie powinny byc rozwiazane permisions wstepnie
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -187,6 +217,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         };
+        mLocationRequest = createLocationRequest();
+        builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+        checkLocationSetting(builder);
+
         initMap();
     }
 
@@ -206,6 +241,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
+        getLastKnownLocation();
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -219,7 +256,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected LocationRequest createLocationRequest() {
         Log.d(TAG, "createLocationRequest: ");
         LocationRequest mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(5000);
+        mLocationRequest.setInterval(10000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return mLocationRequest;
     }
@@ -238,22 +275,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             REQUEST_CHECK_SETTINGS);
                 } catch (IntentSender.SendIntentException ignored) {
                 }
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
-                builder1.setTitle("Continuous Location Request");
-                builder1.setMessage("This request is essential to get location update continuously");
-                builder1.create();
-                builder1.setPositiveButton("OK", (dialog, which) -> {
-                    ResolvableApiException resolvable = (ResolvableApiException) e;
-                    try {
-                        resolvable.startResolutionForResult(MapActivity.this,
-                                REQUEST_CHECK_SETTINGS);
-                    } catch (IntentSender.SendIntentException e1) {
-                        e1.printStackTrace();
-                    }
-                });
-                builder1.setNegativeButton("Cancel", (dialog, which) ->
-                        Toast.makeText(mContext, "Location update permission not granted", Toast.LENGTH_LONG).show());
-                builder1.show();
+//                AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
+//                builder1.setTitle("Continuous Location Request");
+//                builder1.setMessage("This request is essential to get location update continuously");
+//                builder1.create();
+//                builder1.setPositiveButton("OK", (dialog, which) -> {
+//                    ResolvableApiException resolvable = (ResolvableApiException) e;
+//                    try {
+//                        resolvable.startResolutionForResult(MapActivity.this,
+//                                REQUEST_CHECK_SETTINGS);
+//                    } catch (IntentSender.SendIntentException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                });
+//                builder1.setNegativeButton("Cancel", (dialog, which) ->
+//                        Toast.makeText(mContext, "Location update permission not granted", Toast.LENGTH_LONG).show());
+//                builder1.show();
             }
         });
     }
@@ -283,14 +320,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-    private void drawPositionMarker(Location location) {
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + location.getLatitude() + ", lng: " + location.getLongitude());
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker());
-        mMap.addMarker(markerOptions);
+    private void getLastKnownLocation() {
+        Log.e(TAG, "getLastKnownLocation:");
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            showPermissionAlert();
+            return;
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        Log.d(TAG, "getLastKnownLocation: locationSuccess");
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM));
+                    }
+                });
     }
 
     @Override

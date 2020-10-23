@@ -30,6 +30,6 @@ public class AreaProvider {
 
             j = i;
         }
-        return Math.abs(area / 2.0) * Math.pow(10,10);
+        return Math.abs(area / 2.0) * Math.pow(10, 10);
     }
 }

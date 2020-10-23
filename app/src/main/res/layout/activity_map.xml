@@ -29,19 +29,31 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/discard_measurement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickDiscardMeasurement"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/start_measurement"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_discard_measurement" />
+
+        <ImageView
             android:id="@+id/finish_measurement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickStopMeasurement"
             android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/start_measurement"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/add_marker"
+            app:layout_constraintEnd_toStartOf="@+id/discard_measurement"
             app:srcCompat="@drawable/ic_finish_measurement" />
 
         <ImageView
             android:id="@+id/start_measurement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="20dp"
             android:onClick="clickStartMeasurement"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +63,8 @@
             android:id="@+id/add_marker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="20dp"
             android:onClick="clickStartMeasurement"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
