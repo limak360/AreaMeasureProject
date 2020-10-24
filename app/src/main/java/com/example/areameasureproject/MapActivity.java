@@ -21,7 +21,6 @@ import com.example.areameasureproject.db.DatabaseManager;
 import com.example.areameasureproject.entity.LatLngAdapter;
 import com.example.areameasureproject.entity.Measurement;
 import com.example.areameasureproject.measure.AreaProvider;
-import com.example.areameasureproject.measure.MeasurementProvider;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -54,7 +53,7 @@ import static com.example.areameasureproject.MainActivity.openDrawer;
 import static com.example.areameasureproject.MainActivity.redirectActivity;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    //TODO dodac wczytywanie zapisanego pomiaru do mapy jako context menu
+    //TODO
     private static final String TAG = "MapActivity";
 
     private static final int REQUEST_CHECK_SETTINGS = 102;
@@ -151,6 +150,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void drawPolygonIfAvailable() {
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+        try {
+            List<LatLngAdapter> latLngAdapters = (List<LatLngAdapter>) bundle.getSerializable("MeasurementCoordinates");
+            List<LatLng> latLngs = latLngAdapters.stream()
+                    .map(latLngAdapter -> new LatLng(latLngAdapter.getLatitude(), latLngAdapter.getLongitude()))
+                    .collect(Collectors.toList());
+
+            polygon = mMap.addPolygon(new PolygonOptions()
+                    .clickable(false)
+                    .strokeColor(0xAA0000FF)
+                    .fillColor(0x660000FF)
+                    .addAll(latLngs));
+        } catch (Exception ignore) {
+        }
+    }
+
     private void clearMap() {
         mMap.clear();
     }
@@ -192,6 +209,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .map(latLng -> new LatLngAdapter(measurement, latLng.latitude, latLng.longitude))
                 .collect(Collectors.toList());
     }
+
 //
 
     @Override
@@ -242,6 +260,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
         getLastKnownLocation();
+        drawPolygonIfAvailable();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&

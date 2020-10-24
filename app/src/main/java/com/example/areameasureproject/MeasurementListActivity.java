@@ -1,13 +1,9 @@
 package com.example.areameasureproject;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +27,6 @@ public class MeasurementListActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     @Override
-    //todo  przetestowac dodawanie i pobieranie z bazy danych na sztywno na razie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measurement_list);
@@ -77,4 +72,38 @@ public class MeasurementListActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    public static final int REQUEST_WRITE_STORAGE = 112;
+
+//    private void requestPermission(Activity context) {
+//        boolean hasPermission = (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+//        if (!hasPermission) {
+//            ActivityCompat.requestPermissions(context,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                    REQUEST_WRITE_STORAGE);
+//        } else {
+//            // You are allowed to write external storage:
+//            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/new_folder";
+//            File storageDir = new File(path);
+//            if (!storageDir.exists() && !storageDir.mkdirs()) {
+//                // This should never happen - log handled exception!
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        switch (requestCode) {
+//            case Preferences.REQUEST_WRITE_STORAGE: {
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    Toast.makeText(this, "The app was allowed to write to your storage!", Toast.LENGTH_LONG).show();
+//
+//                } else {
+//                    Toast.makeText(this, "The app was not allowed to write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        }
+//    }
 }
