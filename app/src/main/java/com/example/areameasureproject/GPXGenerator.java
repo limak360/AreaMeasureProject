@@ -1,8 +1,10 @@
 package com.example.areameasureproject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,8 +17,13 @@ import java.util.List;
 public class GPXGenerator {
 
     private static final String TAG = "GPXGenerator";
+    private final Context mContext;
 
-    public static void generateGFX(File file, String name, List<Location> points) {
+    public GPXGenerator(Context context) {
+        this.mContext = context;
+    }
+
+    public void generateGFX(File file, String name, List<Location> points) {
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>" +
                 "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" creator=\"MapSource 6.15.5\"" +
                 " version=\"1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
@@ -46,7 +53,9 @@ public class GPXGenerator {
             writer.append(footer);
             writer.flush();
             writer.close();
+            Toast.makeText(mContext, "File saved...", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
+            Toast.makeText(mContext, "File saving error", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Error Writting Path", e);
         }
     }

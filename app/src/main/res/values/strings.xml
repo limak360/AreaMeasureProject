@@ -14,7 +14,19 @@
     <string name="settings">Settings</string>
     <string name="about_me">About me</string>
     <string name="title_activity_maps">Map</string>
+    <string name="export_measurement_to">Export measurement to …</string>
+    <string name="recycle_view_name">Name:</string>
+    <string name="recycle_view_date">Date:</string>
+    <string name="recycle_view_area">Area:</string>
     <string name="load_measurement">Load measurement</string>
-    <string name="export_measurement_to">Export measurement to ...</string>
+    <string name="export_measurement">Export measurement</string>
+    <string name="coordinates">Coordinates:</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="area">Area</string>
+    <string name="measure_name">Measure name</string>
+    <string name="author_kamil_jacko">Author: Kamil Jacko</string>
 
 </resources>

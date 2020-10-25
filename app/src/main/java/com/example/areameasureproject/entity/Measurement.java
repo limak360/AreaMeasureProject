@@ -17,6 +17,8 @@ public class Measurement implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
+    private String name;
+    @Column
     private String date;
     @ForeignCollectionField(eager = true)
     private Collection<LatLngAdapter> coordinates;
@@ -26,19 +28,20 @@ public class Measurement implements Serializable {
     public Measurement() {
     }
 
-//    public static class Build extends Measurement {
-//        private String date;
-//        private Collection<LatLngAdapter> coordinates;
-//        private double area;
-//
-//    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDate() {
@@ -65,14 +68,39 @@ public class Measurement implements Serializable {
         this.area = area;
     }
 
-    @Override
-    public String toString() {
-        return "Measurement{" +
-                "id=" + id +
-                ", date=" + date +
-                ", coordinates=" + coordinates +
-                ", area=" + area +
-                '}';
-    }
+    public static final class Builder {
+        private String name;
+        private String date;
+        private Collection<LatLngAdapter> coordinates;
+        private double area;
 
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder date(String date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder coordinates(Collection<LatLngAdapter> coordinates) {
+            this.coordinates = coordinates;
+            return this;
+        }
+
+        public Builder area(double area) {
+            this.area = area;
+            return this;
+        }
+
+        public Measurement build() {
+            Measurement measurement = new Measurement();
+            measurement.name = this.name;
+            measurement.date = this.date;
+            measurement.coordinates = this.coordinates;
+            measurement.area = this.area;
+            return measurement;
+        }
+    }
 }

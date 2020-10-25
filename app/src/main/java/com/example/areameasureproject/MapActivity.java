@@ -8,8 +8,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,6 +75,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Context mContext;
     private List<LatLng> coordinates;
     private Polygon polygon;
+    private PopupWindow popupWindow;
 
     public void clickMenu(View view) {
         openDrawer(drawerLayout);
@@ -100,6 +106,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     ImageView stopMeasurement;
     ImageView discardMeasurement;
     ImageView dropPin;
+    EditText editTextMeasureName;
 
     public void clickStartMeasurement(View view) {
         clearMap();
@@ -124,7 +131,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (!coordinates.isEmpty()) {
             coordinates.add(coordinates.get(0));
         }
+        clickSave(view);
+    }
+
+    public void clickSave(View view) {
+        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_window, null);
+        editTextMeasureName = popupView.findViewById(R.id.editTextMeasureName);
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+    }
+
+    public void clickSaved(View view) {
         saveMeasureResult();
+        popupWindow.dismiss();
+    }
+
+    public void clickCancel(View view) {
+        popupWindow.dismiss();
     }
 
     public void clickDiscardMeasurement(View view) {
@@ -196,12 +223,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private Measurement createMeasurementObject() {
-        Measurement measurement = new Measurement();
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm");
-        measurement.setDate(dateTime.format(formatter));
-        measurement.setArea(new AreaProvider(coordinates).getArea());
-        return measurement;
+        return new Measurement.Builder()
+                .name(editTextMeasureName.getText().toString())
+                .date(dateTime.format(formatter))
+                .area(new AreaProvider(coordinates).getArea())
+                .build();
     }
 
     private List<LatLngAdapter> createLatLngAdapterList(Measurement measurement) {
