@@ -41,7 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.name.setText(mMeasurements.get(position).getName());
         holder.date.setText(mMeasurements.get(position).getDate());
-        holder.area.setText(String.format("%.3f", mMeasurements.get(position).getArea()) + " m2");
+        holder.area.setText(String.format("%.3f", mMeasurements.get(position).getArea()) + " m²");
     }
 
     @Override

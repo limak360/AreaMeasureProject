@@ -1,7 +1,7 @@
 package com.example.areameasureproject;
 
 import android.Manifest;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -58,7 +58,7 @@ import static com.example.areameasureproject.MainActivity.openDrawer;
 import static com.example.areameasureproject.MainActivity.redirectActivity;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    //TODO
+
     private static final String TAG = "MapActivity";
 
     private static final int REQUEST_CHECK_SETTINGS = 102;
@@ -72,10 +72,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Location currentLocation;
 
     private DrawerLayout drawerLayout;
-    private Context mContext;
-    private List<LatLng> coordinates;
-    private Polygon polygon;
     private PopupWindow popupWindow;
+    private List<LatLng> coordinates;
+
+    private ImageView startMeasurement;
+    private ImageView stopMeasurement;
+    private ImageView discardMeasurement;
+    private ImageView dropPin;
+    private EditText editTextMeasureName;
+
+    private MapDrawUtils mapDrawUtils;
 
     public void clickMenu(View view) {
         openDrawer(drawerLayout);
@@ -98,45 +104,45 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void clickAboutMe(View view) {
-        redirectActivity(this, AboutMeActivity.class);
+        redirectActivity(this, AppInfoActivity.class);
     }
 
-    //przeniesc do innej klasy
-    ImageView startMeasurement;
-    ImageView stopMeasurement;
-    ImageView discardMeasurement;
-    ImageView dropPin;
-    EditText editTextMeasureName;
-
     public void clickStartMeasurement(View view) {
-        clearMap();
-        startMeasurement.setVisibility(View.INVISIBLE);
-        stopMeasurement.setVisibility(View.VISIBLE);
-        discardMeasurement.setVisibility(View.VISIBLE);
-        dropPin.setVisibility(View.VISIBLE);
+        mapDrawUtils.clearMap();
+        setMeasurementTextViewsVisibility(View.INVISIBLE, View.VISIBLE);
 
         dropPin.setOnClickListener(v -> {
-            drawPositionMarker(currentLocation);
-            coordinates.add(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
-            removePolygon();
-            drawPolygon();
+            mapDrawUtils.drawPositionMarker(currentLocation);
+            addCoordinates();
+            mapDrawUtils.removePolygon();
+            mapDrawUtils.drawPolygon();
         });
     }
 
     public void clickStopMeasurement(View view) {
-        startMeasurement.setVisibility(View.VISIBLE);
-        stopMeasurement.setVisibility(View.INVISIBLE);
-        discardMeasurement.setVisibility(View.INVISIBLE);
-        dropPin.setVisibility(View.INVISIBLE);
+        setMeasurementTextViewsVisibility(View.VISIBLE, View.INVISIBLE);
         if (!coordinates.isEmpty()) {
             coordinates.add(coordinates.get(0));
         }
-        clickSave(view);
+        showPopUpWindow(view);
     }
 
-    public void clickSave(View view) {
+    public void clickDiscardMeasurement(View view) {
+        mapDrawUtils.clearMap();
+        deleteCoordinates();
+        setMeasurementTextViewsVisibility(View.VISIBLE, View.INVISIBLE);
+    }
+
+    private void setMeasurementTextViewsVisibility(int invisible, int visible) {
+        startMeasurement.setVisibility(invisible);
+        stopMeasurement.setVisibility(visible);
+        discardMeasurement.setVisibility(visible);
+        dropPin.setVisibility(visible);
+    }
+
+    public void showPopUpWindow(View view) {
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_window, null);
+        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.popup_window, null);
         editTextMeasureName = popupView.findViewById(R.id.editTextMeasureName);
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -145,81 +151,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
-    public void clickSaved(View view) {
+    public void clickSave(View view) {
         saveMeasureResult();
-        popupWindow.dismiss();
+        dismissPopUpWindow();
     }
 
     public void clickCancel(View view) {
+        dismissPopUpWindow();
+    }
+
+    private void dismissPopUpWindow() {
         popupWindow.dismiss();
-    }
-
-    public void clickDiscardMeasurement(View view) {
-        clearMap();
-        deleteCoordinates();
-        startMeasurement.setVisibility(View.VISIBLE);
-        stopMeasurement.setVisibility(View.INVISIBLE);
-        discardMeasurement.setVisibility(View.INVISIBLE);
-        dropPin.setVisibility(View.INVISIBLE);
-    }
-
-    private void drawPolygon() {
-        polygon = mMap.addPolygon(new PolygonOptions()
-                .clickable(false)
-                .strokeColor(0xAA0000FF)
-                .fillColor(0x660000FF)
-                .addAll(coordinates));
-    }
-
-    private void removePolygon() {
-        if (!Objects.isNull(polygon)) {
-            polygon.remove();
-        }
-    }
-
-    private void drawPolygonIfAvailable() {
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-        try {
-            List<LatLngAdapter> latLngAdapters = (List<LatLngAdapter>) bundle.getSerializable("MeasurementCoordinates");
-            List<LatLng> latLngs = latLngAdapters.stream()
-                    .map(latLngAdapter -> new LatLng(latLngAdapter.getLatitude(), latLngAdapter.getLongitude()))
-                    .collect(Collectors.toList());
-
-            polygon = mMap.addPolygon(new PolygonOptions()
-                    .clickable(false)
-                    .strokeColor(0xAA0000FF)
-                    .fillColor(0x660000FF)
-                    .addAll(latLngs));
-        } catch (Exception ignore) {
-        }
-    }
-
-    private void clearMap() {
-        mMap.clear();
-    }
-
-    private void drawPositionMarker(Location location) {
-        MarkerOptions markerOptions = new MarkerOptions();
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        markerOptions.position(latLng);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker());
-        mMap.addMarker(markerOptions);
     }
 
     private void saveMeasureResult() {
         Measurement measurement = createMeasurementObject();
         List<LatLngAdapter> latLngAdapterList = createLatLngAdapterList(measurement);
         measurement.setCoordinates(latLngAdapterList);
-        //save to database
-        DatabaseManager databaseManager = DatabaseManager.getInstance(this);
-        databaseManager.addLatLngAdapters(latLngAdapterList);
-        databaseManager.addMeasurement(measurement);
-        deleteCoordinates();
-    }
 
-    private void deleteCoordinates() {
-        coordinates.clear();
+        saveObjectsToDatabase(measurement, latLngAdapterList);
+        deleteCoordinates();
     }
 
     private Measurement createMeasurementObject() {
@@ -238,7 +189,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .collect(Collectors.toList());
     }
 
-//
+    private void saveObjectsToDatabase(Measurement measurement, List<LatLngAdapter> latLngAdapterList) {
+        DatabaseManager databaseManager = DatabaseManager.getInstance(this);
+        databaseManager.addLatLngAdapters(latLngAdapterList);
+        databaseManager.addMeasurement(measurement);
+    }
+
+    private void addCoordinates() {
+        coordinates.add(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+    }
+
+    private void deleteCoordinates() {
+        coordinates.clear();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -250,10 +213,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         stopMeasurement = findViewById(R.id.finish_measurement);
         discardMeasurement = findViewById(R.id.discard_measurement);
         dropPin = findViewById(R.id.add_marker);
-        mContext = getApplicationContext();
+
         coordinates = new ArrayList<>();
+        mapDrawUtils = new MapDrawUtils();
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        mLocationRequest = createLocationRequest();
+        builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+        checkLocationSetting(builder);
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -263,18 +232,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         };
-        mLocationRequest = createLocationRequest();
-        builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
-        checkLocationSetting(builder);
-
-        initMap();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         startLocationUpdates();
+
+        initMap();
     }
 
     @Override
@@ -286,18 +251,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady: map is ready");
-        mMap = googleMap;
         getLastKnownLocation();
-        drawPolygonIfAvailable();
+        mMap = googleMap;
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        mapDrawUtils.drawPolygonIfAvailable();
     }
 
     protected LocationRequest createLocationRequest() {
@@ -322,23 +286,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             REQUEST_CHECK_SETTINGS);
                 } catch (IntentSender.SendIntentException ignored) {
                 }
-//                AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
-//                builder1.setTitle("Continuous Location Request");
-//                builder1.setMessage("This request is essential to get location update continuously");
-//                builder1.create();
-//                builder1.setPositiveButton("OK", (dialog, which) -> {
-//                    ResolvableApiException resolvable = (ResolvableApiException) e;
-//                    try {
-//                        resolvable.startResolutionForResult(MapActivity.this,
-//                                REQUEST_CHECK_SETTINGS);
-//                    } catch (IntentSender.SendIntentException e1) {
-//                        e1.printStackTrace();
-//                    }
-//                });
-//                builder1.setNegativeButton("Cancel", (dialog, which) ->
-//                        Toast.makeText(mContext, "Location update permission not granted", Toast.LENGTH_LONG).show());
-//                builder1.show();
             }
+            showPermissionAlert();
         });
     }
 
@@ -370,10 +319,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void getLastKnownLocation() {
         Log.e(TAG, "getLastKnownLocation:");
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            showPermissionAlert();
             return;
         }
         fusedLocationClient.getLastLocation()
@@ -414,6 +360,62 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Log.d(TAG, "showPermissionAlert: ");
         if (ActivityCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        }
+    }
+
+
+    private class MapDrawUtils {
+
+        private Polygon polygon;
+
+        private void drawPolygon() {
+            addPolygonToMap(coordinates);
+        }
+
+        private void removePolygon() {
+            if (!Objects.isNull(polygon)) {
+                polygon.remove();
+            }
+        }
+
+        private void drawPolygonIfAvailable() {
+            Bundle bundle = getIntentExtras();
+            try {
+                List<LatLngAdapter> latLngAdapters = (List<LatLngAdapter>) bundle.getSerializable("MeasurementCoordinates");
+                addPolygonToMap(getLatLngList(latLngAdapters));
+            } catch (Exception ignore) {
+            }
+        }
+
+        private Bundle getIntentExtras() {
+            Intent intent = getIntent();
+            return intent.getExtras();
+        }
+
+        private List<LatLng> getLatLngList(List<LatLngAdapter> latLngAdapters) {
+            return latLngAdapters.stream()
+                    .map(latLngAdapter -> new LatLng(latLngAdapter.getLatitude(), latLngAdapter.getLongitude()))
+                    .collect(Collectors.toList());
+        }
+
+        private void addPolygonToMap(List<LatLng> latLngs) {
+            polygon = mMap.addPolygon(new PolygonOptions()
+                    .clickable(false)
+                    .strokeColor(0xAA0000FF)
+                    .fillColor(0x660000FF)
+                    .addAll(latLngs));
+        }
+
+        private void drawPositionMarker(Location location) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            markerOptions.position(latLng);
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker());
+            mMap.addMarker(markerOptions);
+        }
+
+        private void clearMap() {
+            mMap.clear();
         }
     }
 }

@@ -56,7 +56,7 @@ public class GPXGenerator {
             Toast.makeText(mContext, "File saved...", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Toast.makeText(mContext, "File saving error", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Error Writting Path", e);
+            Log.e(TAG, "Error Writing Path", e);
         }
     }
 }

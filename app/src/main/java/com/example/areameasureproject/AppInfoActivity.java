@@ -10,7 +10,7 @@ import static com.example.areameasureproject.MainActivity.closeDrawer;
 import static com.example.areameasureproject.MainActivity.openDrawer;
 import static com.example.areameasureproject.MainActivity.redirectActivity;
 
-public class AboutMeActivity extends AppCompatActivity {
+public class AppInfoActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
@@ -42,6 +42,6 @@ public class AboutMeActivity extends AppCompatActivity {
     }
 
     public void clickAboutMe(View view) {
-        redirectActivity(this, AboutMeActivity.class);
+        redirectActivity(this, AppInfoActivity.class);
     }
 }

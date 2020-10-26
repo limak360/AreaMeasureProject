@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        if (isServicesOK()) {
+        if (checkMapServices()) {
             init();
         }
     }
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickAboutMe(View view) {
-        redirectActivity(this, AboutMeActivity.class);
+        redirectActivity(this, AppInfoActivity.class);
     }
 
     public static void redirectActivity(Activity activity, Class aClass) {
@@ -84,10 +84,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private boolean checkMapServices() {
+        return isServicesOK();
+    }
+
     public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
+
         if (available == ConnectionResult.SUCCESS) {
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;

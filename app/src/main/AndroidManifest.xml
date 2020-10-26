@@ -23,7 +23,7 @@
 
         <activity android:name=".SettingsActivity" />
         <activity android:name=".MeasurementListActivity" />
-        <activity android:name=".AboutMeActivity" />
+        <activity android:name=".AppInfoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

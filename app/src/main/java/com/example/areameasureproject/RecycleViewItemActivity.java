@@ -46,13 +46,13 @@ public class RecycleViewItemActivity extends AppCompatActivity {
         fulfillMeasurementValues();
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void fulfillMeasurementValues() {
         Measurement measurement = getMeasurement();
         this.name.setText(measurement.getName());
         this.date.setText(measurement.getDate());
         String formattedArea = String.format("%.3f", measurement.getArea());
-        this.area.setText(formattedArea);
+        this.area.setText(formattedArea + " m²");
         setScrollViewCoordinates(measurement.getCoordinates());
     }
 
@@ -108,7 +108,7 @@ public class RecycleViewItemActivity extends AppCompatActivity {
     public void writeFile(List<Location> locations) {
         if (isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "measurement.gpx");
-            new GPXGenerator(getApplicationContext()).generateGFX(file, "XDDD", locations);
+            new GPXGenerator(getApplicationContext()).generateGFX(file, getMeasurement().getName(), locations);
         } else {
             showPermissionAlert();
         }

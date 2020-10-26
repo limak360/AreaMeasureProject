@@ -42,6 +42,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void clickAboutMe(View view) {
-        redirectActivity(this, AboutMeActivity.class);
+        redirectActivity(this, AppInfoActivity.class);
     }
 }

@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 public class AreaProvider {
-
+    //todo zamiana jednostek
     private static final String TAG = "AreaProvider";
     private final List<LatLng> coordinates;
 

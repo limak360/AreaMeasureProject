@@ -4,19 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.areameasureproject.db.DatabaseManager;
-import com.example.areameasureproject.entity.LatLngAdapter;
 import com.example.areameasureproject.entity.Measurement;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static com.example.areameasureproject.MainActivity.closeDrawer;
@@ -61,7 +57,7 @@ public class MeasurementListActivity extends AppCompatActivity implements Recycl
     }
 
     public void clickAboutMe(View view) {
-        redirectActivity(this, AboutMeActivity.class);
+        redirectActivity(this, AppInfoActivity.class);
     }
 
     public void prepareObjects() {
