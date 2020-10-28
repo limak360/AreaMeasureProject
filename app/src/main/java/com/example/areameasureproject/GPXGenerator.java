@@ -2,17 +2,18 @@ package com.example.areameasureproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.areameasureproject.entity.LatLngAdapter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 public class GPXGenerator {
 
@@ -23,7 +24,7 @@ public class GPXGenerator {
         this.mContext = context;
     }
 
-    public void generateGFX(File file, String name, List<Location> points) {
+    public void generateGFX(File file, String name, Collection<LatLngAdapter> points) {
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>" +
                 "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" creator=\"MapSource 6.15.5\"" +
                 " version=\"1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
@@ -34,13 +35,13 @@ public class GPXGenerator {
         StringBuilder segments = new StringBuilder();
         @SuppressLint("SimpleDateFormat")
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-        for (Location location : points) {
+        for (LatLngAdapter latLngAdapter : points) {
             segments.append("<trkpt lat=\"")
-                    .append(location.getLatitude())
+                    .append(latLngAdapter.getLatitude())
                     .append("\" lon=\"")
-                    .append(location.getLongitude())
+                    .append(latLngAdapter.getLongitude())
                     .append("\"><time>")
-                    .append(df.format(new Date(location.getTime())))
+                    .append(df.format(new Date(latLngAdapter.getTime())))
                     .append("</time></trkpt>\n");
         }
         String footer = "</trkseg></trk></gpx>";

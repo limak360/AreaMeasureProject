@@ -2,6 +2,7 @@ package com.example.areameasureproject.measure;
 
 import android.util.Log;
 
+import com.example.areameasureproject.entity.LatLngAdapter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.List;
 public class AreaProvider {
     //todo zamiana jednostek
     private static final String TAG = "AreaProvider";
-    private final List<LatLng> coordinates;
+    private final List<LatLngAdapter> coordinates;
 
-    public AreaProvider(List<LatLng> coordinates) {
+    public AreaProvider(List<LatLngAdapter> coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -25,8 +26,8 @@ public class AreaProvider {
 
         int j = coordinates.size() - 1;
         for (int i = 0; i < coordinates.size(); i++) {
-            area += (coordinates.get(j).latitude + coordinates.get(i).latitude) *
-                    (coordinates.get(j).longitude - coordinates.get(i).longitude);
+            area += (coordinates.get(j).getLatitude() + coordinates.get(i).getLatitude()) *
+                    (coordinates.get(j).getLongitude() - coordinates.get(i).getLongitude());
 
             j = i;
         }

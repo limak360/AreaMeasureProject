@@ -73,7 +73,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private DrawerLayout drawerLayout;
     private PopupWindow popupWindow;
-    private List<LatLng> coordinates;
+    private List<LatLngAdapter> coordinates;
 
     private ImageView startMeasurement;
     private ImageView stopMeasurement;
@@ -166,11 +166,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void saveMeasureResult() {
         Measurement measurement = createMeasurementObject();
-        List<LatLngAdapter> latLngAdapterList = createLatLngAdapterList(measurement);
+        List<LatLngAdapter> latLngAdapterList = createLatLngAdapterObjectList(measurement);
         measurement.setCoordinates(latLngAdapterList);
 
         saveObjectsToDatabase(measurement, latLngAdapterList);
         deleteCoordinates();
+    }
+
+    private List<LatLngAdapter> createLatLngAdapterObjectList(Measurement measurement) {
+        return coordinates.stream()
+                .map(latLng -> new LatLngAdapter(measurement, latLng.getLatitude(), latLng.getLongitude(), latLng.getTime()))
+                .collect(Collectors.toList());
     }
 
     private Measurement createMeasurementObject() {
@@ -183,12 +189,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .build();
     }
 
-    private List<LatLngAdapter> createLatLngAdapterList(Measurement measurement) {
-        return coordinates.stream()
-                .map(latLng -> new LatLngAdapter(measurement, latLng.latitude, latLng.longitude))
-                .collect(Collectors.toList());
-    }
-
     private void saveObjectsToDatabase(Measurement measurement, List<LatLngAdapter> latLngAdapterList) {
         DatabaseManager databaseManager = DatabaseManager.getInstance(this);
         databaseManager.addLatLngAdapters(latLngAdapterList);
@@ -196,7 +196,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void addCoordinates() {
-        coordinates.add(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+        coordinates.add(new LatLngAdapter(currentLocation.getLatitude(), currentLocation.getLongitude(), currentLocation.getTime()));
     }
 
     private void deleteCoordinates() {
@@ -369,7 +369,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         private Polygon polygon;
 
         private void drawPolygon() {
-            addPolygonToMap(coordinates);
+            addPolygonToMap(getLatLngList(coordinates));
         }
 
         private void removePolygon() {
@@ -387,15 +387,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
 
-        private Bundle getIntentExtras() {
-            Intent intent = getIntent();
-            return intent.getExtras();
-        }
-
         private List<LatLng> getLatLngList(List<LatLngAdapter> latLngAdapters) {
             return latLngAdapters.stream()
                     .map(latLngAdapter -> new LatLng(latLngAdapter.getLatitude(), latLngAdapter.getLongitude()))
                     .collect(Collectors.toList());
+        }
+
+        private Bundle getIntentExtras() {
+            Intent intent = getIntent();
+            return intent.getExtras();
         }
 
         private void addPolygonToMap(List<LatLng> latLngs) {
@@ -411,6 +411,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             markerOptions.position(latLng);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker());
+            markerOptions.title(latLng.toString());
             mMap.addMarker(markerOptions);
         }
 

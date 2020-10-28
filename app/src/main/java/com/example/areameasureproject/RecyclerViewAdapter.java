@@ -1,7 +1,6 @@
 package com.example.areameasureproject;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private Context mContext;
-    private List<Measurement> mMeasurements;
-    private OnMeasurementListener mOnMeasurementListener;
+    private final List<Measurement> mMeasurements;
+    private final OnMeasurementListener mOnMeasurementListener;
 
-    public RecyclerViewAdapter(Context mContext, List<Measurement> mMeasurements, OnMeasurementListener mOnMeasurementListener) {
-        this.mContext = mContext;
+    public RecyclerViewAdapter(List<Measurement> mMeasurements, OnMeasurementListener mOnMeasurementListener) {
         this.mMeasurements = mMeasurements;
         this.mOnMeasurementListener = mOnMeasurementListener;
     }

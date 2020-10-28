@@ -3,6 +3,7 @@ package com.example.areameasureproject.entity;
 import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,17 +20,26 @@ public class LatLngAdapter implements Serializable {
     @DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
     private Measurement measurement;
     @Column
-    private double Latitude;
+    private double latitude;
     @Column
-    private double Longitude;
+    private double longitude;
+    @Column
+    private long time;
 
     public LatLngAdapter() {
     }
 
-    public LatLngAdapter(Measurement measurement, double latitude, double longitude) {
+    public LatLngAdapter(double latitude, double longitude, long time) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.time = time;
+    }
+
+    public LatLngAdapter(Measurement measurement, double latitude, double longitude, long time) {
         this.measurement = measurement;
-        Latitude = latitude;
-        Longitude = longitude;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.time = time;
     }
 
     public Measurement getMeasurement() {
@@ -49,26 +59,34 @@ public class LatLngAdapter implements Serializable {
     }
 
     public double getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
     public void setLatitude(double latitude) {
-        Latitude = latitude;
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
-        return Longitude;
+        return longitude;
     }
 
     public void setLongitude(double longitude) {
-        Longitude = longitude;
+        this.longitude = longitude;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     @Override
     public String toString() {
         return "LatLngAdapter{" +
-                "Latitude=" + Latitude +
-                ", Longitude=" + Longitude +
+                "Latitude=" + latitude +
+                ", Longitude=" + longitude +
                 '}';
     }
 }

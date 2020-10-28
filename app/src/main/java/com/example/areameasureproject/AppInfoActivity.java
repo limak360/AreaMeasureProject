@@ -17,7 +17,7 @@ public class AppInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_me);
+        setContentView(R.layout.app_info_activity);
         drawerLayout = findViewById(R.id.drawer_layout);
     }
 

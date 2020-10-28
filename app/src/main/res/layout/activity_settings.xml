@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/drawer_layout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".SettingsActivity">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/main_toolbar" />
+
+    <FrameLayout
+        android:id="@+id/settings"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent" />
 
-        <include layout="@layout/main_toolbar" />
+</LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Settings" />
+<RelativeLayout
+    android:layout_width="200dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@android:color/holo_blue_light">
 
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/holo_blue_light">
-
-        <include layout="@layout/main_nav_drawer" />
-    </RelativeLayout>
+    <include layout="@layout/main_nav_drawer" />
+</RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

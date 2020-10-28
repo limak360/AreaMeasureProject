@@ -68,7 +68,7 @@ public class MeasurementListActivity extends AppCompatActivity implements Recycl
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this, measurementsList, this);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(measurementsList, this);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

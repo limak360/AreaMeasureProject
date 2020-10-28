@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -57,11 +56,21 @@ public class RecycleViewItemActivity extends AppCompatActivity {
     }
 
     private void setScrollViewCoordinates(Collection<LatLngAdapter> coordinates) {
+        List<LatLngAdapter> latLngAdapters = getUniqueList(coordinates);
         StringBuilder stringBuilder = new StringBuilder();
-        for (LatLngAdapter latLngAdapter : coordinates) {
+        for (LatLngAdapter latLngAdapter : latLngAdapters) {
             stringBuilder.append("{").append(latLngAdapter.getLatitude()).append("; ").append(latLngAdapter.getLongitude()).append("}\n");
         }
+
         coordinatesValues.setText(stringBuilder);
+    }
+
+    private List<LatLngAdapter> getUniqueList(Collection<LatLngAdapter> coordinates) {
+        List<LatLngAdapter> latLngAdapters = new ArrayList<>(coordinates);
+        if (!latLngAdapters.isEmpty()) {
+            latLngAdapters.remove(latLngAdapters.get(latLngAdapters.size() - 1));
+        }
+        return latLngAdapters;
     }
 
     public void clickBackArrow(View v) {
@@ -89,26 +98,15 @@ public class RecycleViewItemActivity extends AppCompatActivity {
 
     public void clickExportMeasurement(View v) {
         Measurement measurement = getMeasurement();
-        List<Location> locations = createLocationList(measurement.getCoordinates());
+        Collection<LatLngAdapter> locations = measurement.getCoordinates();
         writeFile(locations);
     }
 
-    private List<Location> createLocationList(Collection<LatLngAdapter> coordinates) {
-        List<Location> locations = new ArrayList<>();
-        for (LatLngAdapter latLngAdapter : coordinates) {
-            Location location = new Location("");
-            location.setLatitude(latLngAdapter.getLatitude());
-            location.setLongitude(latLngAdapter.getLongitude());
-
-            locations.add(location);
-        }
-        return locations;
-    }
-
-    public void writeFile(List<Location> locations) {
+    public void writeFile(Collection<LatLngAdapter> locations) {
         if (isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "measurement.gpx");
-            new GPXGenerator(getApplicationContext()).generateGFX(file, getMeasurement().getName(), locations);
+            String name = getMeasurement().getName();
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name + ".gpx");
+            new GPXGenerator(getApplicationContext()).generateGFX(file, name, locations);
         } else {
             showPermissionAlert();
         }
