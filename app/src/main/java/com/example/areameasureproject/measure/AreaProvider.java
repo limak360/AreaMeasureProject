@@ -3,12 +3,16 @@ package com.example.areameasureproject.measure;
 import android.util.Log;
 
 import com.example.areameasureproject.entity.LatLngAdapter;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+/*todo
+ * dodanie opcji
+ * zamiana jednostek
+ * dokonczenie zakladki app info
+ * poprawa szaty graficznej
+ */
 public class AreaProvider {
-    //todo zamiana jednostek
     private static final String TAG = "AreaProvider";
     private final List<LatLngAdapter> coordinates;
 
@@ -21,9 +25,9 @@ public class AreaProvider {
     }
 
     private double measureArea() {
-        double area = 0.0;
         Log.e(TAG, "measureArea: " + coordinates.toString());
 
+        double area = 0.0;
         int j = coordinates.size() - 1;
         for (int i = 0; i < coordinates.size(); i++) {
             area += (coordinates.get(j).getLatitude() + coordinates.get(i).getLatitude()) *

@@ -30,7 +30,6 @@
     <string name="app_info">App info</string>
     <string name="title_activity_settings2">SettingsActivity2</string>
 
-
     <string name="location_updates_title">Location updates interval</string>
     <string name="units_title">Measurement system</string>
     <string name="details_title">Open application details and system settings</string>
@@ -38,10 +37,26 @@
     <string name="gps_header">Location</string>
     <string name="units_header">Units</string>
     <string name="other_header">Other</string>
-    <string name="check_box_preference_cm">cm2</string>
-    <string name="check_box_preference_km2">km2</string>
-    <string name="check_box_preference_m2">m2</string>
+    <string name="check_box_preference_cm">cm²</string>
+    <string name="check_box_preference_m2">m²</string>
+    <string name="check_box_preference_km2">km²</string>
     <string name="other_summary">Here you can change settings like granted permissions. manage storage, etc.</string>
-    <string name="location_priority_title">Location priority</string>
+    <string name="location_priority_title">Location accuracy</string>
+
+    <string name="pref_priority_label_low">low accuracy</string>
+    <string name="pref_priority_label_balanced">balanced accuracy</string>
+    <string name="pref_priority_label_high">high accuracy</string>
+
+    <string name="pref_priority_low_value">104</string>
+    <string name="pref_priority_balanced_value">102</string>
+    <string name="pref_priority_high_value">100</string>
+
+    <string name="pref_updates_label_5s">5s</string>
+    <string name="pref_updates_label_10s">10s</string>
+    <string name="pref_updates_label_15s">15s</string>
+
+    <string name="pref_updates_5s_value">5000</string>
+    <string name="pref_updates_10s_value">10000</string>
+    <string name="pref_updates_15s_value">15000</string>
 
 </resources>

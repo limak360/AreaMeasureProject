@@ -3,6 +3,7 @@ package com.example.areameasureproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,7 +20,7 @@ import static com.example.areameasureproject.MainActivity.closeDrawer;
 import static com.example.areameasureproject.MainActivity.openDrawer;
 import static com.example.areameasureproject.MainActivity.redirectActivity;
 
-public class MeasurementListActivity extends AppCompatActivity implements RecyclerViewAdapter.OnMeasurementListener {
+public class MeasurementListActivity extends AppCompatActivity implements RecyclerViewAdapter.OnMeasurementListener, RecyclerViewAdapter.OnLongMeasurementListener {
 
     private static final String TAG = "MeasurementListActivity";
 
@@ -68,7 +69,7 @@ public class MeasurementListActivity extends AppCompatActivity implements Recycl
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(measurementsList, this);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(measurementsList, this, this);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -78,5 +79,12 @@ public class MeasurementListActivity extends AppCompatActivity implements Recycl
         Intent intent = new Intent(this, RecycleViewItemActivity.class);
         intent.putExtra("measurement", measurementsList.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public void onLongMeasurementListener(int position) {
+        DatabaseManager databaseManager = DatabaseManager.getInstance(this);
+        databaseManager.deleteRecord(measurementsList.get(position).getId());
+        measurementsList.remove(measurementsList.get(position));
     }
 }

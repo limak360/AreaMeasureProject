@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,12 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 import com.example.areameasureproject.db.DatabaseManager;
 import com.example.areameasureproject.entity.LatLngAdapter;
@@ -62,6 +65,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String TAG = "MapActivity";
 
     private static final int REQUEST_CHECK_SETTINGS = 102;
+    public static final String LOCATION_UPDATES_DEF_VALUE = "10000";
+    public static final String LOCATION_ACCURACY_DEF_VALUE = "100";
     private static final float ZOOM = 20f;
 
     private GoogleMap mMap;
@@ -108,11 +113,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void clickStartMeasurement(View view) {
+        deleteCoordinates();
         mapDrawUtils.clearMap();
-        setMeasurementTextViewsVisibility(View.INVISIBLE, View.VISIBLE);
+        setMeasurementOptionsVisibility(View.INVISIBLE, View.VISIBLE);
 
         dropPin.setOnClickListener(v -> {
-            mapDrawUtils.drawPositionMarker(currentLocation);
+            mapDrawUtils.drawPositionMarker();
             addCoordinates();
             mapDrawUtils.removePolygon();
             mapDrawUtils.drawPolygon();
@@ -120,20 +126,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void clickStopMeasurement(View view) {
-        setMeasurementTextViewsVisibility(View.VISIBLE, View.INVISIBLE);
-        if (!coordinates.isEmpty()) {
+        setMeasurementOptionsVisibility(View.VISIBLE, View.INVISIBLE);
+        if (coordinates.size() >= 3) {
             coordinates.add(coordinates.get(0));
+            showPopUpWindow(view);
+        } else {
+            Toast.makeText(this, "To measure area you need at least 3 points.", Toast.LENGTH_SHORT).show();
+            deleteCoordinates();
         }
-        showPopUpWindow(view);
     }
 
     public void clickDiscardMeasurement(View view) {
         mapDrawUtils.clearMap();
         deleteCoordinates();
-        setMeasurementTextViewsVisibility(View.VISIBLE, View.INVISIBLE);
+        setMeasurementOptionsVisibility(View.VISIBLE, View.INVISIBLE);
     }
 
-    private void setMeasurementTextViewsVisibility(int invisible, int visible) {
+    private void setMeasurementOptionsVisibility(int invisible, int visible) {
         startMeasurement.setVisibility(invisible);
         stopMeasurement.setVisibility(visible);
         discardMeasurement.setVisibility(visible);
@@ -151,17 +160,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
+    private void dismissPopUpWindow() {
+        popupWindow.dismiss();
+    }
+
     public void clickSave(View view) {
         saveMeasureResult();
         dismissPopUpWindow();
+        deleteCoordinates();
     }
 
     public void clickCancel(View view) {
         dismissPopUpWindow();
-    }
-
-    private void dismissPopUpWindow() {
-        popupWindow.dismiss();
+        deleteCoordinates();
     }
 
     private void saveMeasureResult() {
@@ -185,8 +196,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return new Measurement.Builder()
                 .name(editTextMeasureName.getText().toString())
                 .date(dateTime.format(formatter))
-                .area(new AreaProvider(coordinates).getArea())
+                .area(getArea())
                 .build();
+    }
+
+    private double getArea() {
+        SharedPreferences sharedPref = getSharedPreferences();
+        sharedPref.getBoolean();
+
+
+        return new AreaProvider(coordinates).getArea();
     }
 
     private void saveObjectsToDatabase(Measurement measurement, List<LatLngAdapter> latLngAdapterList) {
@@ -267,13 +286,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected LocationRequest createLocationRequest() {
         Log.d(TAG, "createLocationRequest: ");
         LocationRequest mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(getUpdatesPref());
+        mLocationRequest.setPriority(getPriorityPref());
         return mLocationRequest;
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    private int getUpdatesPref() {
+        SharedPreferences sharedPref = getSharedPreferences();
+        return Integer.parseInt(sharedPref.getString("location_updates", LOCATION_UPDATES_DEF_VALUE));
+    }
+
+    private int getPriorityPref() {
+        SharedPreferences sharedPref = getSharedPreferences();
+        return Integer.parseInt(sharedPref.getString("location_accuracy", LOCATION_ACCURACY_DEF_VALUE));
     }
 
     private void checkLocationSetting(LocationSettingsRequest.Builder builder) {
         Log.d(TAG, "checkLocationSetting: ");
+        showPermissionAlert();
+
         SettingsClient client = LocationServices.getSettingsClient(this);
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
@@ -287,7 +322,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 } catch (IntentSender.SendIntentException ignored) {
                 }
             }
-            showPermissionAlert();
         });
     }
 
@@ -363,7 +397,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-
     private class MapDrawUtils {
 
         private Polygon polygon;
@@ -383,6 +416,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             try {
                 List<LatLngAdapter> latLngAdapters = (List<LatLngAdapter>) bundle.getSerializable("MeasurementCoordinates");
                 addPolygonToMap(getLatLngList(latLngAdapters));
+                drawPositionMarkers(latLngAdapters);
             } catch (Exception ignore) {
             }
         }
@@ -406,13 +440,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .addAll(latLngs));
         }
 
-        private void drawPositionMarker(Location location) {
+        private void drawPositionMarkers(List<LatLngAdapter> latLngAdapters) {
+            for (LatLng latLng : getLatLngList(latLngAdapters)) {
+                mMap.addMarker(getMarkerOptions(latLng));
+            }
+        }
+
+        private void drawPositionMarker() {
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            mMap.addMarker(getMarkerOptions(latLng));
+        }
+
+        private MarkerOptions getMarkerOptions(LatLng latLng) {
             MarkerOptions markerOptions = new MarkerOptions();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             markerOptions.position(latLng);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker());
             markerOptions.title(latLng.toString());
-            mMap.addMarker(markerOptions);
+            return markerOptions;
         }
 
         private void clearMap() {

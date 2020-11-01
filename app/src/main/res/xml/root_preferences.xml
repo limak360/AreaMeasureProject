@@ -1,17 +1,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <PreferenceCategory app:title="@string/gps_header">
 
         <ListPreference
-            app:defaultValue="true"
-            app:key="location_priority"
+            android:entries="@array/pref_priority_option_labels"
+            android:entryValues="@array/pref_priority_option_values"
+            app:defaultValue="100"
+            app:key="location_accuracy"
             app:title="@string/location_priority_title"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="true"
+            android:entries="@array/pref_updates_option_labels"
+            android:entryValues="@array/pref_updates_option_values"
+            app:defaultValue="10000"
             app:key="location_updates"
             app:title="@string/location_updates_title"
             app:useSimpleSummaryProvider="true" />
@@ -35,11 +38,10 @@
 
     </PreferenceCategory>
 
-
     <PreferenceCategory app:title="@string/other_header">
 
-        <ListPreference
-            app:key="units"
+        <Preference
+            app:key="systemSettingsPreference"
             app:summary="@string/other_summary"
             app:title="@string/details_title" />
 

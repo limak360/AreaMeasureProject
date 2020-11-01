@@ -10,7 +10,9 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <include layout="@layout/main_return" />
 
@@ -124,24 +126,24 @@
         android:text="@string/coordinates"
         android:textAlignment="textStart"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView_coordinates"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toEndOf="@+id/bt_recycle_view_load"
         app:layout_constraintTop_toTopOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintVertical_bias="0.95" />
 
     <ScrollView
         android:id="@+id/scrollView_coordinates"
-        android:layout_width="218dp"
-        android:layout_height="413dp"
+        android:layout_width="200dp"
+        android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.999"
-        app:layout_constraintStart_toEndOf="@+id/bt_recycle_view_export"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+        app:layout_constraintHorizontal_bias="1"
 
-        app:layout_constraintVertical_bias="0.999">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="1">
 
         <LinearLayout
             android:layout_width="match_parent"

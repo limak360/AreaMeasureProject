@@ -1,12 +1,26 @@
 <resources>
-    <!-- Reply Preference -->
-    <string-array name="units_entries">
-        <item>Metric</item>
-        <item>Imperial</item>
-    </string-array>
+    <array name="pref_priority_option_labels">
+        <item>@string/pref_priority_label_low</item>
+        <item>@string/pref_priority_label_balanced</item>
+        <item>@string/pref_priority_label_high</item>
+    </array>
 
-    <string-array name="units_values">
-        <item>metric</item>
-        <item>imperial</item>
-    </string-array>
+    <array name="pref_priority_option_values">
+        <item>@string/pref_priority_low_value</item>
+        <item>@string/pref_priority_balanced_value</item>
+        <item>@string/pref_priority_high_value</item>
+    </array>
+
+    <array name="pref_updates_option_labels">
+        <item>@string/pref_updates_label_5s</item>
+        <item>@string/pref_updates_label_10s</item>
+        <item>@string/pref_updates_label_15s</item>
+    </array>
+
+    <array name="pref_updates_option_values">
+        <item>@string/pref_updates_5s_value</item>
+        <item>@string/pref_updates_10s_value</item>
+        <item>@string/pref_updates_15s_value</item>
+    </array>
+
 </resources>
