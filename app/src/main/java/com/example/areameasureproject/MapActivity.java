@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.preference.PreferenceManager;
 
 import com.example.areameasureproject.db.DatabaseManager;
 import com.example.areameasureproject.entity.LatLngAdapter;
@@ -65,8 +63,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String TAG = "MapActivity";
 
     private static final int REQUEST_CHECK_SETTINGS = 102;
-    public static final String LOCATION_UPDATES_DEF_VALUE = "10000";
-    public static final String LOCATION_ACCURACY_DEF_VALUE = "100";
     private static final float ZOOM = 20f;
 
     private GoogleMap mMap;
@@ -86,6 +82,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private ImageView dropPin;
     private EditText editTextMeasureName;
 
+    private PreferenceUtils preferenceUtils;
     private MapDrawUtils mapDrawUtils;
 
     public void clickMenu(View view) {
@@ -196,16 +193,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return new Measurement.Builder()
                 .name(editTextMeasureName.getText().toString())
                 .date(dateTime.format(formatter))
-                .area(getArea())
+                .area(new AreaProvider(coordinates).getArea())
                 .build();
-    }
-
-    private double getArea() {
-        SharedPreferences sharedPref = getSharedPreferences();
-        sharedPref.getBoolean();
-
-
-        return new AreaProvider(coordinates).getArea();
     }
 
     private void saveObjectsToDatabase(Measurement measurement, List<LatLngAdapter> latLngAdapterList) {
@@ -234,6 +223,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         dropPin = findViewById(R.id.add_marker);
 
         coordinates = new ArrayList<>();
+        preferenceUtils = new PreferenceUtils(this);
         mapDrawUtils = new MapDrawUtils();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -286,23 +276,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected LocationRequest createLocationRequest() {
         Log.d(TAG, "createLocationRequest: ");
         LocationRequest mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(getUpdatesPref());
-        mLocationRequest.setPriority(getPriorityPref());
+        mLocationRequest.setInterval(preferenceUtils.getUpdatesPref());
+        mLocationRequest.setPriority(preferenceUtils.getPriorityPref());
         return mLocationRequest;
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(this);
-    }
-
-    private int getUpdatesPref() {
-        SharedPreferences sharedPref = getSharedPreferences();
-        return Integer.parseInt(sharedPref.getString("location_updates", LOCATION_UPDATES_DEF_VALUE));
-    }
-
-    private int getPriorityPref() {
-        SharedPreferences sharedPref = getSharedPreferences();
-        return Integer.parseInt(sharedPref.getString("location_accuracy", LOCATION_ACCURACY_DEF_VALUE));
     }
 
     private void checkLocationSetting(LocationSettingsRequest.Builder builder) {

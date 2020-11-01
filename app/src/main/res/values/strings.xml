@@ -8,7 +8,7 @@
     <string name="get_location">get location</string>
     <string name="profile">profile</string>
     <string name="measurements">Measurements</string>
-    <string name="my_app_IDK">My App</string>
+    <string name="my_app_title">Area Measure Project</string>
     <string name="map">Map</string>
     <string name="saved_measurements">Saved measurements</string>
     <string name="settings">Settings</string>
@@ -26,9 +26,7 @@
     <string name="date">Date</string>
     <string name="area">Area</string>
     <string name="measure_name">Measure name</string>
-    <string name="author_kamil_jacko">Author: Kamil Jacko</string>
     <string name="app_info">App info</string>
-    <string name="title_activity_settings2">SettingsActivity2</string>
 
     <string name="location_updates_title">Location updates interval</string>
     <string name="units_title">Measurement system</string>
@@ -58,5 +56,10 @@
     <string name="pref_updates_5s_value">5000</string>
     <string name="pref_updates_10s_value">10000</string>
     <string name="pref_updates_15s_value">15000</string>
+
+    <string name="author_kamil_jacko">Author: Kamil Jacko</string>
+    <string name="application_name">Application name: Area Measure Project</string>
+    <string name="release_date">Release date: 01.11.2020</string>
+    <string name="android_version">Android version: 8.1</string>
 
 </resources>

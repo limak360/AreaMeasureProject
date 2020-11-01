@@ -32,6 +32,7 @@ public class RecycleViewItemActivity extends AppCompatActivity {
     private TextView date;
     private TextView area;
     private TextView coordinatesValues;
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class RecycleViewItemActivity extends AppCompatActivity {
         date = findViewById(R.id.tv_recycle_view_date_value);
         area = findViewById(R.id.tv_recycle_view_area_value);
         coordinatesValues = findViewById(R.id.tv_recycle_view_coordinates_value);
+        preferenceUtils = new PreferenceUtils(this);
 
         fulfillMeasurementValues();
     }
@@ -50,8 +52,7 @@ public class RecycleViewItemActivity extends AppCompatActivity {
         Measurement measurement = getMeasurement();
         this.name.setText(measurement.getName());
         this.date.setText(measurement.getDate());
-        String formattedArea = String.format("%.3f", measurement.getArea());
-        this.area.setText(formattedArea + " m²");
+        this.area.setText(preferenceUtils.formatArea(measurement.getArea()));
         setScrollViewCoordinates(measurement.getCoordinates());
     }
 
@@ -80,7 +81,7 @@ public class RecycleViewItemActivity extends AppCompatActivity {
     public void clickLoadMeasurement(View v) {
         Intent intent = new Intent(v.getContext(), MapActivity.class);
         intent.putExtras(prepareIntentExtras());
-        v.getContext().startActivity(intent); //TODO Activity Result Launcher ??? startActivityForResult
+        v.getContext().startActivity(intent);
     }
 
     private Bundle prepareIntentExtras() {

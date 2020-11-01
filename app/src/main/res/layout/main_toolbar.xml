@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/my_app_IDK"
+        android:text="@string/my_app_title"
         android:textAlignment="center"
         android:textColor="#636363"
         android:textSize="20sp"

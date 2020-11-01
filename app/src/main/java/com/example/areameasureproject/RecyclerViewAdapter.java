@@ -1,6 +1,7 @@
 package com.example.areameasureproject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final List<Measurement> mMeasurements;
     private final OnMeasurementListener mOnMeasurementListener;
     private final OnLongMeasurementListener onLongMeasurementListener;
+    private final PreferenceUtils preferenceUtils;
 
-    public RecyclerViewAdapter(List<Measurement> mMeasurements, OnMeasurementListener mOnMeasurementListener, OnLongMeasurementListener onLongMeasurementListener) {
+    public RecyclerViewAdapter(Context mContext, List<Measurement> mMeasurements, OnMeasurementListener mOnMeasurementListener, OnLongMeasurementListener onLongMeasurementListener) {
         this.mMeasurements = mMeasurements;
         this.mOnMeasurementListener = mOnMeasurementListener;
         this.onLongMeasurementListener = onLongMeasurementListener;
+        this.preferenceUtils = new PreferenceUtils(mContext);
     }
 
     @NonNull
@@ -40,7 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.name.setText(mMeasurements.get(position).getName());
         holder.date.setText(mMeasurements.get(position).getDate());
-        holder.area.setText(String.format("%.3f", mMeasurements.get(position).getArea()) + " m²");
+        holder.area.setText(preferenceUtils.formatArea(mMeasurements.get(position).getArea()));
     }
 
     @Override

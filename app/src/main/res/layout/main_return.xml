@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/holo_blue_light"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="12dp"
-    android:paddingStart="1dp"
-    android:background="@android:color/holo_blue_light">
+    android:paddingStart="0dp">
 
     <ImageView
         android:id="@+id/back_arrow"
@@ -15,5 +15,15 @@
         android:layout_height="32dp"
         android:onClick="clickBackArrow"
         app:srcCompat="@drawable/ic_back" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/my_app_title"
+        android:textAlignment="center"
+        android:textColor="#636363"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

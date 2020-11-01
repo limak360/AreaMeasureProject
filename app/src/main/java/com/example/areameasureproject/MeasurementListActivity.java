@@ -3,7 +3,6 @@ package com.example.areameasureproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -69,7 +68,7 @@ public class MeasurementListActivity extends AppCompatActivity implements Recycl
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(measurementsList, this, this);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this, measurementsList, this, this);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

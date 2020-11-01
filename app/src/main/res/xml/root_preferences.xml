@@ -25,15 +25,15 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="check_box_preference_cm"
+            android:key="preference_cm"
             android:title="@string/check_box_preference_cm" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="check_box_preference_m"
+            android:key="preference_m"
             android:title="@string/check_box_preference_m2" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="check_box_preference_km"
+            android:key="preference_km"
             android:title="@string/check_box_preference_km2" />
 
     </PreferenceCategory>

@@ -7,13 +7,13 @@ import com.example.areameasureproject.entity.LatLngAdapter;
 import java.util.List;
 
 /*todo
- * dodanie opcji
- * zamiana jednostek
  * dokonczenie zakladki app info
  * poprawa szaty graficznej
  */
 public class AreaProvider {
+
     private static final String TAG = "AreaProvider";
+
     private final List<LatLngAdapter> coordinates;
 
     public AreaProvider(List<LatLngAdapter> coordinates) {
@@ -35,6 +35,11 @@ public class AreaProvider {
 
             j = i;
         }
-        return Math.abs(area / 2.0) * Math.pow(10, 10);
+        return format(Math.abs(area / 2.0) * Math.pow(10, 10));
+    }
+
+    private double format(double value) {
+        double scale = Math.pow(10, 3);
+        return Math.round(value * scale) / scale;
     }
 }
