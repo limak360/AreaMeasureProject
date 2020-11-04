@@ -11,14 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/measure_name"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028" />
+        app:layout_constraintVertical_bias="0.008" />
 
     <EditText
         android:id="@+id/editTextMeasureName"
@@ -27,6 +25,7 @@
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.368"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +41,7 @@
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="5dp"
         android:text="@string/save"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btCancel"
         app:layout_constraintHorizontal_bias="0.0"
@@ -55,6 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:textAppearance="@style/mainFont"
         android:layout_marginBottom="5dp"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"

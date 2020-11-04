@@ -5,13 +5,14 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_width="165dp"
+        android:layout_height="102dp"
         android:layout_margin="16dp"
         android:onClick="clickLogo"
         android:src="@drawable/ic_logo" />
 
     <LinearLayout
+        android:paddingTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -24,7 +25,8 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:padding="12dp"
-            android:text="@string/map" />
+            android:text="@string/map"
+            android:textAppearance="@style/mainFont" />
 
     </LinearLayout>
 
@@ -41,7 +43,8 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:padding="12dp"
-            android:text="@string/saved_measurements" />
+            android:text="@string/saved_measurements"
+            android:textAppearance="@style/mainFont" />
 
     </LinearLayout>
 
@@ -59,7 +62,8 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:padding="12dp"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            android:textAppearance="@style/mainFont" />
 
     </LinearLayout>
 
@@ -77,7 +81,8 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:padding="12dp"
-            android:text="@string/app_info" />
+            android:text="@string/app_info"
+            android:textAppearance="@style/mainFont" />
 
     </LinearLayout>
 

@@ -154,7 +154,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
         popupWindow = new PopupWindow(popupView, width, height, focusable);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, -200);
     }
 
     private void dismissPopUpWindow() {

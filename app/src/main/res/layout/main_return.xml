@@ -6,24 +6,21 @@
     android:background="@android:color/holo_blue_light"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="12dp"
-    android:paddingStart="0dp">
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
 
     <ImageView
         android:id="@+id/back_arrow"
-        android:layout_width="70dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:onClick="clickBackArrow"
         app:srcCompat="@drawable/ic_back" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="322dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="@string/my_app_title"
         android:textAlignment="center"
-        android:textColor="#636363"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textAppearance="@style/titleFont"/>
 
 </LinearLayout>

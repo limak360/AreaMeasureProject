@@ -26,7 +26,7 @@
         android:layout_marginTop="80dp"
         android:text="@string/recycle_view_name"
         android:textAlignment="textStart"
-        android:textStyle="bold"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,9 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:text=""
-        android:textAlignment="textStart"
+        android:textAlignment="textEnd"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintHorizontal_bias="0.146"
         app:layout_constraintStart_toEndOf="@+id/tv_recycle_view_name"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +51,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/recycle_view_date"
         android:textAlignment="textStart"
-        android:textStyle="bold"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_name" />
 
@@ -60,9 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text=""
-        android:textAlignment="textStart"
+        android:textAlignment="textEnd"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.146"
+        app:layout_constraintHorizontal_bias="0.187"
         app:layout_constraintStart_toEndOf="@+id/tv_recycle_view_date"
         app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_name_value" />
 
@@ -74,7 +76,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/recycle_view_area"
         android:textAlignment="textStart"
-        android:textStyle="bold"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_date" />
 
@@ -84,9 +86,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text=""
-        android:textAlignment="textStart"
+        android:textAlignment="textEnd"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintHorizontal_bias="0.187"
         app:layout_constraintStart_toEndOf="@+id/tv_recycle_view_area"
         app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_date_value" />
 
@@ -100,6 +103,7 @@
         android:padding="0dp"
         android:text="@string/load_measurement"
         android:textSize="12sp"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintEnd_toStartOf="@+id/scrollView_coordinates"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +118,7 @@
         android:padding="0dp"
         android:text="@string/export_measurement"
         android:textSize="12sp"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_recycle_view_load"
@@ -125,7 +130,7 @@
         android:layout_height="wrap_content"
         android:text="@string/coordinates"
         android:textAlignment="textStart"
-        android:textStyle="bold"
+        android:textAppearance="@style/mainFont"
         app:layout_constraintBottom_toTopOf="@+id/scrollView_coordinates"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
@@ -154,7 +159,8 @@
                 android:id="@+id/tv_recycle_view_coordinates_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text=""
+                android:textAppearance="@style/mainFont" />
         </LinearLayout>
     </ScrollView>
 
