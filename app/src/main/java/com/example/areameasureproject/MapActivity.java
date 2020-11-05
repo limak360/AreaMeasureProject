@@ -269,6 +269,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
 
         mapDrawUtils.drawPolygonIfAvailable();
     }

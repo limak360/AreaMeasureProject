@@ -18,80 +18,86 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_recycle_view_name"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="80dp"
-        android:text="@string/recycle_view_name"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/mainFont"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_recycle_view_name_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text=""
-        android:textAlignment="textEnd"
-        android:textAppearance="@style/mainFont"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView_coordinates"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.146"
-        app:layout_constraintStart_toEndOf="@+id/tv_recycle_view_name"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_recycle_view_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/recycle_view_date"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/mainFont"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_name" />
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2">
 
-    <TextView
-        android:id="@+id/tv_recycle_view_date_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text=""
-        android:textAlignment="textEnd"
-        android:textAppearance="@style/mainFont"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.187"
-        app:layout_constraintStart_toEndOf="@+id/tv_recycle_view_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_name_value" />
+        <TableRow
+            android:id="@+id/row_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
-    <TextView
-        android:id="@+id/tv_recycle_view_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/recycle_view_area"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/mainFont"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_date" />
+            <TextView
+                android:id="@+id/tv_recycle_view_name"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/recycle_view_name"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/mainFont" />
 
-    <TextView
-        android:id="@+id/tv_recycle_view_area_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text=""
-        android:textAlignment="textEnd"
-        android:textAppearance="@style/mainFont"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.187"
-        app:layout_constraintStart_toEndOf="@+id/tv_recycle_view_area"
-        app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_date_value" />
+            <TextView
+                android:id="@+id/tv_recycle_view_name_value"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textStart"
+                android:textAppearance="@style/mainFont" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/row_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_recycle_view_date"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/recycle_view_date"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/mainFont" />
+
+            <TextView
+                android:id="@+id/tv_recycle_view_date_value"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textStart"
+                android:textAppearance="@style/mainFont" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/row_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_recycle_view_area"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/recycle_view_area"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/mainFont" />
+
+            <TextView
+                android:id="@+id/tv_recycle_view_area_value"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textStart"
+                android:textAppearance="@style/mainFont" />
+        </TableRow>
+
+    </TableLayout>
 
     <Button
         android:id="@+id/bt_recycle_view_load"
@@ -102,12 +108,12 @@
         android:onClick="clickLoadMeasurement"
         android:padding="0dp"
         android:text="@string/load_measurement"
-        android:textSize="12sp"
         android:textAppearance="@style/mainFont"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/scrollView_coordinates"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_recycle_view_area" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
     <Button
         android:id="@+id/bt_recycle_view_export"
@@ -117,8 +123,8 @@
         android:onClick="clickExportMeasurement"
         android:padding="0dp"
         android:text="@string/export_measurement"
-        android:textSize="12sp"
         android:textAppearance="@style/mainFont"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_recycle_view_load"

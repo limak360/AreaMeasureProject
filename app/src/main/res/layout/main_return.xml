@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/ic_back" />
 
     <TextView
-        android:layout_width="322dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:text="@string/my_app_title"
         android:textAlignment="center"
