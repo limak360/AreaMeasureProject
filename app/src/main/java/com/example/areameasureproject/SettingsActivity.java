@@ -55,8 +55,6 @@ public class SettingsActivity extends AppCompatActivity{
         }
     }
 
-
-
     public void clickMenu(View view) {
         openDrawer(drawerLayout);
     }

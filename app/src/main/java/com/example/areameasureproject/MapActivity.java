@@ -183,7 +183,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private List<LatLngAdapter> createLatLngAdapterObjectList(Measurement measurement) {
         return coordinates.stream()
-                .map(latLng -> new LatLngAdapter(measurement, latLng.getLatitude(), latLng.getLongitude(), latLng.getTime()))
+                .map(latLng -> new LatLngAdapter(measurement,
+                                                latLng.getLatitude(),
+                                                latLng.getLongitude(),
+                                                latLng.getTime()))
                 .collect(Collectors.toList());
     }
 

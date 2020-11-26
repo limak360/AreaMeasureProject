@@ -6,10 +6,7 @@ import com.example.areameasureproject.entity.LatLngAdapter;
 
 import java.util.List;
 
-/*todo
- * dokonczenie zakladki app info
- * poprawa szaty graficznej
- */
+
 public class AreaProvider {
 
     private static final String TAG = "AreaProvider";
