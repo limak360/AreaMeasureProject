@@ -21,8 +21,6 @@ import static com.example.areameasureproject.MainActivity.redirectActivity;
 
 public class MeasurementListActivity extends AppCompatActivity implements RecyclerViewAdapter.OnMeasurementListener, RecyclerViewAdapter.OnLongMeasurementListener {
 
-    private static final String TAG = "MeasurementListActivity";
-
     private List<Measurement> measurementsList;
     private DrawerLayout drawerLayout;
 

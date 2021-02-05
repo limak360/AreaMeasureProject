@@ -17,8 +17,6 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private static final String TAG = "RecyclerViewAdapter";
-
     private final List<Measurement> mMeasurements;
     private final OnMeasurementListener mOnMeasurementListener;
     private final OnLongMeasurementListener onLongMeasurementListener;

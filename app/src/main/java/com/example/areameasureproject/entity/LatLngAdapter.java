@@ -3,7 +3,6 @@ package com.example.areameasureproject.entity;
 import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
